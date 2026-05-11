@@ -46,6 +46,14 @@ MEP economics is also defined by market intent:
 - **Chat market (0 bounty):** peer-to-peer coordination without transfer
 - **Data market (- bounty):** provider can pay consumer to accept high-value data
 
+Protocol fields used to express this model:
+
+| Market | `economics.market` | `economics.payment_direction` | `bounty_quanta` |
+|---|---|---|---|
+| Compute | `compute` | `sender_to_receiver` | `> 0` |
+| Chat | `chat` | `none` | `0` |
+| Data | `data` | `receiver_to_sender` | `> 0` |
+
 ## Reference Implementation
 
 **https://github.com/WUAIBING/MEP**

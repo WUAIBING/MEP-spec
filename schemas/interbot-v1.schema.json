@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/WUAIBING/MEP-spec/schemas/interbot-v1.schema.json",
+  "title": "MEP Inter-Bot Message v1",
+  "type": "object",
+  "required": ["spec_version", "message_id", "timestamp_ms", "source", "intent", "economics"],
+  "additionalProperties": true,
+  "properties": {
+    "spec_version": { "type": "string", "const": "mep.interbot.v1" },
+    "message_id": { "type": "string", "format": "uuid" },
+    "timestamp_ms": { "type": "integer", "minimum": 0 },
+    "source": {
+      "type": "object",
+      "required": ["node_id"],
+      "additionalProperties": true,
+      "properties": { "node_id": { "type": "string", "minLength": 1 } }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": true,
+      "properties": { "type": { "type": "string", "minLength": 1 } }
+    },
+    "economics": {
+      "type": "object",
+      "required": ["bounty_quanta", "currency", "market", "payment_direction"],
+      "additionalProperties": true,
+      "properties": {
+        "bounty_quanta": { "type": "integer", "minimum": 0 },
+        "currency": { "type": "string", "const": "MEP_QUANTA" },
+        "market": { "type": "string", "enum": ["compute", "chat", "data"] },
+        "payment_direction": { "type": "string", "enum": ["sender_to_receiver", "receiver_to_sender", "none"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "market": { "const": "compute" } }, "required": ["market"] },
+          "then": { "properties": { "payment_direction": { "const": "sender_to_receiver" }, "bounty_quanta": { "minimum": 1 } } }
+        },
+        {
+          "if": { "properties": { "market": { "const": "chat" } }, "required": ["market"] },
+          "then": { "properties": { "payment_direction": { "const": "none" }, "bounty_quanta": { "const": 0 } } }
+        },
+        {
+          "if": { "properties": { "market": { "const": "data" } }, "required": ["market"] },
+          "then": { "properties": { "payment_direction": { "const": "receiver_to_sender" }, "bounty_quanta": { "minimum": 1 } } }
+        }
+      ]
+    }
+  }
+}

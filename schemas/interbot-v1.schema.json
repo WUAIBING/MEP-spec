@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/WUAIBING/MEP-spec/schemas/interbot-v1.schema.json",
+  "title": "MEP Inter-Bot Message v1",
+  "type": "object",
+  "required": ["spec_version", "message_id", "timestamp_ms", "source", "intent", "task", "economics"],
+  "additionalProperties": true,
+  "properties": {
+    "spec_version": { "type": "string", "const": "mep.interbot.v1" },
+    "message_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "timestamp_ms": { "type": "integer", "minimum": 0 },
+    "source": {
+      "type": "object",
+      "required": ["node_id"],
+      "additionalProperties": true,
+      "properties": { "node_id": { "type": "string", "minLength": 1 } }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "anyOf": [
+            {
+              "enum": [
+                "chat.request",
+                "coordination.request",
+                "deployment.request",
+                "analysis.request",
+                "code.review.request",
+                "incident.response",
+                "test.request",
+                "human.approval.request",
+                "human.input.request",
+                "data.feed.offer",
+                "data.dataset.offer"
+              ]
+            },
+            { "pattern": "^[a-z0-9]+\\.[a-z0-9._-]+$" }
+          ]
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "target_node_id": { "type": "string", "minLength": 1 },
+        "target_capability": { "type": "string", "minLength": 1 },
+        "ttl_hops": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "trace_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "required": ["instructions", "expected_output"],
+      "additionalProperties": true,
+      "properties": {
+        "instructions": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "expected_output": {
+          "type": "object",
+          "required": ["result_type"],
+          "additionalProperties": true,
+          "properties": {
+            "result_type": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "economics": {
+      "type": "object",
+      "required": ["bounty_quanta", "currency", "market", "payment_direction"],
+      "additionalProperties": true,
+      "properties": {
+        "bounty_quanta": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,18}|1[0-7][0-9]{18}|18[0-3][0-9]{17}|184[0-3][0-9]{16}|1844[0-5][0-9]{15}|18446[0-6][0-9]{14}|184467[0-3][0-9]{13}|1844674[0-3][0-9]{12}|184467440[0-6][0-9]{10}|1844674407[0-2][0-9]{9}|18446744073[0-6][0-9]{8}|1844674407370[0-8][0-9]{6}|18446744073709[0-4][0-9]{5}|184467440737095[0-4][0-9]{4}|1844674407370955[0-0][0-9]{3}|18446744073709551[0-5][0-9]{2}|184467440737095516[0-0][0-9]|1844674407370955161[0-5])$"
+            }
+          ],
+          "description": "u64 QUANTA. Integers up to 2^53-1 may be JSON numbers; larger values should be decimal strings."
+        },
+        "currency": { "type": "string", "const": "MEP_QUANTA" },
+        "market": { "type": "string", "enum": ["compute", "chat", "data"] },
+        "payment_direction": { "type": "string", "enum": ["sender_to_receiver", "receiver_to_sender", "none"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "market": { "const": "compute" } }, "required": ["market"] },
+          "then": {
+            "properties": {
+              "payment_direction": { "const": "sender_to_receiver" },
+              "bounty_quanta": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+                  {
+                    "type": "string",
+                    "pattern": "^([1-9][0-9]{0,18}|1[0-7][0-9]{18}|18[0-3][0-9]{17}|184[0-3][0-9]{16}|1844[0-5][0-9]{15}|18446[0-6][0-9]{14}|184467[0-3][0-9]{13}|1844674[0-3][0-9]{12}|184467440[0-6][0-9]{10}|1844674407[0-2][0-9]{9}|18446744073[0-6][0-9]{8}|1844674407370[0-8][0-9]{6}|18446744073709[0-4][0-9]{5}|184467440737095[0-4][0-9]{4}|1844674407370955[0-0][0-9]{3}|18446744073709551[0-5][0-9]{2}|184467440737095516[0-0][0-9]|1844674407370955161[0-5])$"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "market": { "const": "chat" } }, "required": ["market"] },
+          "then": {
+            "properties": {
+              "payment_direction": { "const": "none" },
+              "bounty_quanta": {
+                "oneOf": [
+                  { "const": 0 },
+                  { "const": "0" }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "market": { "const": "data" } }, "required": ["market"] },
+          "then": {
+            "properties": {
+              "payment_direction": { "const": "receiver_to_sender" },
+              "bounty_quanta": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+                  {
+                    "type": "string",
+                    "pattern": "^([1-9][0-9]{0,18}|1[0-7][0-9]{18}|18[0-3][0-9]{17}|184[0-3][0-9]{16}|1844[0-5][0-9]{15}|18446[0-6][0-9]{14}|184467[0-3][0-9]{13}|1844674[0-3][0-9]{12}|184467440[0-6][0-9]{10}|1844674407[0-2][0-9]{9}|18446744073[0-6][0-9]{8}|1844674407370[0-8][0-9]{6}|18446744073709[0-4][0-9]{5}|184467440737095[0-4][0-9]{4}|1844674407370955[0-0][0-9]{3}|18446744073709551[0-5][0-9]{2}|184467440737095516[0-0][0-9]|1844674407370955161[0-5])$"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "5a6b7c8d-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "source": { "node_id": "node_635d2a" },
+  "intent": { "type": "chat.request" },
+  "task": {
+    "instructions": "Are you available for a coordination task?",
+    "expected_output": { "result_type": "text" }
+  },
+  "economics": {
+    "bounty_quanta": 0,
+    "currency": "MEP_QUANTA",
+    "market": "chat",
+    "payment_direction": "none"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "6b7c8d9e-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "source": { "node_id": "node_data_feed_01" },
+  "intent": { "type": "data.feed.offer" },
+  "task": {
+    "instructions": "Offering real-time sensor stream EU-WEST-1. Accept to subscribe.",
+    "expected_output": { "result_type": "subscription_ack" }
+  },
+  "economics": {
+    "bounty_quanta": 50000,
+    "currency": "MEP_QUANTA",
+    "market": "data",
+    "payment_direction": "receiver_to_sender"
+  }
+}

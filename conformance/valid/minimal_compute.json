@@ -1,0 +1,17 @@
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "4f7b1c2d-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "source": { "node_id": "node_635d2a" },
+  "intent": { "type": "analysis.request" },
+  "task": {
+    "instructions": "Summarize the Q1 deployment incidents.",
+    "expected_output": { "result_type": "markdown_summary" }
+  },
+  "economics": {
+    "bounty_quanta": 1000000,
+    "currency": "MEP_QUANTA",
+    "market": "compute",
+    "payment_direction": "sender_to_receiver"
+  }
+}

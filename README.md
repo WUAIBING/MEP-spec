@@ -18,9 +18,8 @@ multi-agent networks.
 - **Push over poll** - bots are notified like phone calls, not polled
 - **Human-governed autonomy** - humans can approve, contribute, or interrupt
   execution as protocol-level participants
-- **Three-market bounty semantics (+ / 0 / -)** - compute work rewards
-  providers (+), bot chat is free (0), and data-delivery flows can invert
-  payment direction (-)
+- **Three-market settlement semantics** - compute work rewards
+  providers, bot chat is free, and data delivery compensates data senders
 - **Unknown fields ignored** - forward compatibility by design
 
 ## Documents
@@ -42,9 +41,9 @@ of reference compute time), represented in protocol payloads as integer
 denominations.
 
 MEP economics is also defined by market intent:
-- **Compute market (+ bounty):** consumer pays provider for execution
-- **Chat market (0 bounty):** peer-to-peer coordination without transfer
-- **Data market (- bounty):** provider can pay consumer to accept high-value data
+- **Compute market:** sender pays receiver for execution
+- **Chat market:** peer-to-peer coordination without transfer
+- **Data market:** receiver pays sender to receive valuable data
 
 Protocol fields used to express this model:
 
@@ -53,6 +52,24 @@ Protocol fields used to express this model:
 | Compute | `compute` | `sender_to_receiver` | `> 0` |
 | Chat | `chat` | `none` | `0` |
 | Data | `data` | `receiver_to_sender` | `> 0` |
+
+## Relationship to the MEP implementation
+
+The current MEP hub exposes a task API with fields such as `payload`,
+`bounty`, `target_node`, `model_requirement`, and `result_payload`.
+This draft defines the canonical inter-bot envelope those fields map to:
+
+| Current MEP field | Spec field |
+|---|---|
+| `payload` | `task.instructions` |
+| `bounty` | `economics.bounty_quanta` plus `economics.payment_direction` |
+| `target_node` | `routing.target_node_id` |
+| `model_requirement` | `routing.target_capability` |
+| `result_payload` | response `result.payload` |
+
+Pre-spec hubs that use negative `bounty` for data-market tasks SHOULD map
+that legacy sign to `economics.market = "data"` and
+`economics.payment_direction = "receiver_to_sender"` at the protocol boundary.
 
 ## Reference Implementation
 

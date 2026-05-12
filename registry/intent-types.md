@@ -15,5 +15,5 @@ Last updated: 2026-05-11
 | `test.request` | compute | Standard | Testing tasks |
 | `human.approval.request` | compute | Standard | HITL approval workflow |
 | `human.input.request` | compute | Standard | HITL parallel input workflow |
-| `data.feed.offer` | data | Standard | Receiver pays sender for data feed access |
-| `data.label.request` | data | Standard | Receiver pays sender for labeled data |
+| `data.feed.offer` | data | Standard | Sender offers data feed access; receiver pays sender |
+| `data.dataset.offer` | data | Standard | Sender offers a dataset; receiver pays sender |

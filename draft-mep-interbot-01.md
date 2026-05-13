@@ -172,8 +172,13 @@ not always target a single node.
 |---|---|
 | `target_node_id` | Direct route to a specific node |
 | `target_capability` | Route to a node advertising a capability or model |
-| `ttl_hops` | Optional forwarding limit, 1 through 10 |
+| `ttl_hops` | Optional forwarding limit, 0 through 10 |
 | `trace_id` | UUID linking a causal chain of messages |
+
+`ttl_hops = 0` means direct delivery only and MUST NOT be forwarded by
+an intermediate node. Values 1 through 10 allow up to that many
+forwarding hops. If `ttl_hops` is omitted, the hub MAY apply its default
+forwarding policy.
 
 The current MEP hub field `target_node` maps to `routing.target_node_id`.
 The current MEP hub field `model_requirement` maps to

@@ -1,5 +1,12 @@
 # MEP Specification Changelog
 
+## [2026-05-13] Conformance and routing clarifications
+
+- Allows `routing.ttl_hops = 0` for direct-only, no-forwarding delivery.
+- Documents omitted `ttl_hops` as hub default forwarding policy.
+- Adds `valid/string_quanta.json` to exercise decimal-string
+  `bounty_quanta` values above the JavaScript safe integer boundary.
+
 ## [2026-05-13] mep.node-connectivity.v1 draft
 
 - Adds node connectivity draft with push-first delivery semantics.
@@ -17,6 +24,7 @@
   - `data`: `receiver_to_sender`, `bounty_quanta > 0`
 - Adds registry entries for data-market intents:
   - `data.feed.offer`
-  - `data.label.request`
+  - `data.dataset.offer`
 - Adds conformance vectors for compute/chat/data valid messages.
-- Adds invalid vectors for float bounty and market-direction mismatch.
+- Adds invalid vectors for float bounty, missing task, overflow bounty,
+  and market-direction mismatch.

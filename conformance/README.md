@@ -11,6 +11,8 @@ with generated timestamps.
 
 - `valid/minimal_compute.json`
 - `valid/minimal_chat.json`
+- `valid/minimal_result_response.json`
+- `valid/minimal_error_response.json`
 - `valid/minimal_data.json`
 - `valid/string_quanta.json`
 

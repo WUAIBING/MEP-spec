@@ -1,0 +1,13 @@
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "22222222-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "in_reply_to": "4f7b1c2d-89ab-4cde-b012-3456789abcde",
+  "source": { "node_id": "node_worker_01" },
+  "intent": { "type": "analysis.request" },
+  "error": {
+    "code": "INVALID_ECONOMICS",
+    "message": "chat market requires bounty_quanta = 0",
+    "retryable": false
+  }
+}

@@ -37,12 +37,10 @@ This document does not fully specify:
 - Node registration or connectivity
 - Hub internal storage, matching, or settlement implementation
 - Transport choice such as WebSocket, webhook, HTTP, or long-poll
-- The final response/completion envelope
+- Final completion and settlement semantics
 
-Response and completion messages are intentionally left for a follow-up
-draft. Until that draft exists, implementations MAY map current
-`result_payload` fields to a provisional response object as described in
-Section 9.
+This draft includes a minimal response and error envelope. Full completion
+semantics remain a follow-up topic.
 
 ## 2. Terminology
 
@@ -141,6 +139,43 @@ JSON object.
 }
 ```
 
+### 4.3 Minimal response and error envelopes
+
+Result response:
+
+```json
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "11111111-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "in_reply_to": "4f7b1c2d-89ab-4cde-b012-3456789abcde",
+  "source": { "node_id": "node_worker_01" },
+  "intent": { "type": "analysis.request" },
+  "result": {
+    "result_type": "markdown_summary",
+    "payload": { "text": "Summary payload." }
+  }
+}
+```
+
+Error response:
+
+```json
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "22222222-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "in_reply_to": "4f7b1c2d-89ab-4cde-b012-3456789abcde",
+  "source": { "node_id": "node_worker_01" },
+  "intent": { "type": "analysis.request" },
+  "error": {
+    "code": "INVALID_ECONOMICS",
+    "message": "chat market requires bounty_quanta = 0",
+    "retryable": false
+  }
+}
+```
+
 ## 5. Field Reference
 
 ### 5.1 Top-level fields
@@ -153,8 +188,11 @@ JSON object.
 | `source` | MUST | Sender identity object |
 | `routing` | MAY | Direct target or capability routing hints |
 | `intent` | MUST | Semantic task type |
-| `task` | MUST | Request payload and expected output |
-| `economics` | MUST | QUANTA amount, market, and settlement direction |
+| `task` | MUST (requests) | Request payload and expected output |
+| `economics` | MUST (requests) | QUANTA amount, market, and settlement direction |
+| `in_reply_to` | MUST (responses) | UUID of the request being answered |
+| `result` | MAY (responses) | Response result object |
+| `error` | MAY (responses) | Response error object |
 | `metadata` | MAY | Extension object for implementation-specific fields |
 
 ### 5.2 `source`
@@ -196,6 +234,11 @@ experimental types MUST use a dotted namespace such as
 Transport-internal terms such as `dm`, `rfc`, `bid`, and `complete` are
 hub workflow states or API actions. They SHOULD NOT be used as v1
 semantic intent types unless they are explicitly registered later.
+
+Response messages SHOULD preserve the request `intent.type` when they
+answer that request. A follow-up task that changes semantic intent SHOULD
+be sent as a new request message linked by `routing.trace_id` or another
+implementation-defined correlation field.
 
 ### 5.5 `task`
 
@@ -244,7 +287,7 @@ boundary.
 
 ## 7. Validation Rules
 
-Receivers validating a request message MUST enforce:
+Receivers validating a message MUST enforce:
 
 1. `spec_version` MUST equal `mep.interbot.v1`.
 2. `message_id` MUST be a UUID string.
@@ -252,14 +295,15 @@ Receivers validating a request message MUST enforce:
 4. Runtime `timestamp_ms` MUST be within +/-600 seconds of receiver time.
 5. `source.node_id` MUST be present and non-empty.
 6. `intent.type` MUST be registered or match the private-use dotted pattern.
-7. `task.instructions` MUST be present and non-empty.
-8. `task.expected_output.result_type` MUST be present and non-empty.
-9. `economics.currency` MUST equal `MEP_QUANTA`.
-10. `economics.market` and `economics.payment_direction` MUST match the table in Section 6.
-11. `chat` market MUST use `bounty_quanta = 0`.
-12. `compute` and `data` markets MUST use `bounty_quanta > 0`.
-13. `bounty_quanta` MUST fit in u64 and MUST NOT be a floating-point value.
-14. Unknown fields MUST be ignored.
+7. Request messages MUST include `task` and `economics`.
+8. If `task` is present, `task.instructions` MUST be non-empty and `task.expected_output.result_type` MUST be non-empty.
+9. If `economics` is present, `economics.currency` MUST equal `MEP_QUANTA`.
+10. If `economics` is present, `economics.market` and `economics.payment_direction` MUST match the table in Section 6.
+11. If `economics.market = "chat"`, `bounty_quanta` MUST be 0.
+12. If `economics.market = "compute"` or `"data"`, `bounty_quanta` MUST be > 0.
+13. If `economics.bounty_quanta` is present, it MUST fit in u64 and MUST NOT be a floating-point value.
+14. Response messages MUST include `in_reply_to` and MUST include exactly one of `result` or `error`.
+15. Unknown fields MUST be ignored.
 
 The JSON Schema in `schemas/interbot-v1.schema.json` covers structural
 rules. Runtime freshness and ledger authorization are semantic checks

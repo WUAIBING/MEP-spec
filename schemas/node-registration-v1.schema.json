@@ -5,6 +5,28 @@
   "type": "object",
   "required": ["node_id", "capabilities", "connectivity"],
   "additionalProperties": true,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "connectivity": {
+            "type": "object",
+            "properties": { "mode": { "const": "webhook" } },
+            "required": ["mode"]
+          }
+        },
+        "required": ["connectivity"]
+      },
+      "then": {
+        "properties": {
+          "connectivity": {
+            "type": "object",
+            "required": ["webhook_url", "webhook_secret"]
+          }
+        }
+      }
+    }
+  ],
   "properties": {
     "node_id": {
       "type": "string",

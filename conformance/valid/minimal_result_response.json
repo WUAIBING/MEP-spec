@@ -1,0 +1,14 @@
+{
+  "spec_version": "mep.interbot.v1",
+  "message_id": "11111111-89ab-4cde-b012-3456789abcde",
+  "timestamp_ms": 1746960000000,
+  "in_reply_to": "4f7b1c2d-89ab-4cde-b012-3456789abcde",
+  "source": { "node_id": "node_worker_01" },
+  "intent": { "type": "analysis.request" },
+  "result": {
+    "result_type": "markdown_summary",
+    "payload": {
+      "text": "Summary payload."
+    }
+  }
+}

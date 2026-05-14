@@ -3,8 +3,22 @@
   "$id": "https://github.com/WUAIBING/MEP-spec/schemas/interbot-v1.schema.json",
   "title": "MEP Inter-Bot Message v1",
   "type": "object",
-  "required": ["spec_version", "message_id", "timestamp_ms", "source", "intent", "task", "economics"],
+  "required": ["spec_version", "message_id", "timestamp_ms", "source", "intent"],
   "additionalProperties": true,
+  "oneOf": [
+    {
+      "title": "Request message",
+      "required": ["task", "economics"]
+    },
+    {
+      "title": "Response message",
+      "required": ["in_reply_to"],
+      "oneOf": [
+        { "required": ["result"], "not": { "required": ["error"] } },
+        { "required": ["error"], "not": { "required": ["result"] } }
+      ]
+    }
+  ],
   "properties": {
     "spec_version": { "type": "string", "const": "mep.interbot.v1" },
     "message_id": {
@@ -13,6 +27,11 @@
       "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
     },
     "timestamp_ms": { "type": "integer", "minimum": 0 },
+    "in_reply_to": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
     "source": {
       "type": "object",
       "required": ["node_id"],
@@ -75,6 +94,25 @@
             "result_type": { "type": "string", "minLength": 1 }
           }
         }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["payload"],
+      "additionalProperties": true,
+      "properties": {
+        "payload": {},
+        "result_type": { "type": "string", "minLength": 1 }
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "retryable"],
+      "additionalProperties": true,
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "retryable": { "type": "boolean" }
       }
     },
     "economics": {

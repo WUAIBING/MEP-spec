@@ -1,5 +1,13 @@
 # MEP Specification Changelog
 
+## [2026-05-14] Registry and contribution governance
+
+- Adds `CONTRIBUTING.md` with pull request, registry, error-code, and
+  conformance fixture contribution rules.
+- Adds Proposed and private-use guidance to the intent registry.
+- Adds proposed error-code section and error-code proposal guidance.
+- Links conformance fixtures from the README document table.
+
 ## [2026-05-13] Conformance and routing clarifications
 
 - Allows `routing.ttl_hops = 0` for direct-only, no-forwarding delivery.

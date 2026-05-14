@@ -33,6 +33,7 @@ multi-agent networks.
 | [registry/error-codes.md](./registry/error-codes.md) | Active | Standard error codes |
 | [schemas/interbot-v1.schema.json](./schemas/interbot-v1.schema.json) | Active | JSON Schema - message validation |
 | [schemas/node-registration-v1.schema.json](./schemas/node-registration-v1.schema.json) | Active | JSON Schema - node registration |
+| [conformance/README.md](./conformance/README.md) | Active | Schema conformance fixtures |
 
 ## Economics: QUANTA and 3 Markets
 

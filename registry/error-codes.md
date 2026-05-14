@@ -1,6 +1,11 @@
 # MEP Error Code Registry
 
-Last updated: 2026-05-11
+Last updated: 2026-05-14
+
+Error codes are stable identifiers for validation and runtime failures.
+Use registered codes when possible. Private implementations MAY use
+namespaced codes such as `COM_EXAMPLE_POLICY_REJECTED`, but standard
+codes should be proposed through `CONTRIBUTING.md`.
 
 | Code | Retryable | Description |
 |---|---|---|
@@ -18,3 +23,13 @@ Last updated: 2026-05-11
 | `HITL_REJECTED` | false | Human decision rejected task |
 | `HUB_UNAVAILABLE` | true | Hub temporarily unavailable |
 | `RATE_LIMITED` | true | Sender exceeded request rate |
+
+## Proposed Codes
+
+| Code | Retryable | Description |
+|---|---|---|
+| `RESPONSE_CONFLICT` | false | Response contains both `result` and `error`, or neither |
+| `WEBHOOK_DELIVERY_FAILED` | true | Hub could not deliver a webhook event to a registered node |
+
+To propose a new standard error code, open a GitHub issue with the
+trigger condition, retryability, and an example payload.

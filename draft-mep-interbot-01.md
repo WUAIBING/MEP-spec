@@ -235,6 +235,11 @@ Transport-internal terms such as `dm`, `rfc`, `bid`, and `complete` are
 hub workflow states or API actions. They SHOULD NOT be used as v1
 semantic intent types unless they are explicitly registered later.
 
+Response messages SHOULD preserve the request `intent.type` when they
+answer that request. A follow-up task that changes semantic intent SHOULD
+be sent as a new request message linked by `routing.trace_id` or another
+implementation-defined correlation field.
+
 ### 5.5 `task`
 
 `task` carries the request payload. Request messages MUST include:

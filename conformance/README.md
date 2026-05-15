@@ -14,14 +14,14 @@ with generated timestamps.
 - `valid/minimal_result_response.json`
 - `valid/minimal_error_response.json`
 - `valid/minimal_data.json`
-- `valid/string_quanta.json`
+- `valid/string_ns.json`
 
 ## Invalid
 
-- `invalid/float_quanta.json` (bounty must be integer)
+- `invalid/float_bounty.json` (bounty must be integer)
 - `invalid/market_mismatch.json` (market/direction mismatch)
 - `invalid/missing_task.json` (request messages must carry instructions)
-- `invalid/overflow_quanta.json` (bounty must fit u64)
+- `invalid/overflow_bounty.json` (bounty must fit u64)
 
 ## Running Schema Fixtures
 

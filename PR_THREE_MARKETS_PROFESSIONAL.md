@@ -4,7 +4,7 @@
 # PR Summary
 This PR formalizes MEP's three-market economics model in the spec baseline.
 
-It keeps `bounty_quanta` as non-negative integer economics and makes settlement direction explicit through:
+It keeps `bounty_ns` as non-negative integer economics and makes settlement direction explicit through:
 - `economics.market`
 - `economics.payment_direction`
 

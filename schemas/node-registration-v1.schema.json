@@ -96,7 +96,7 @@
           "type": "integer",
           "minimum": 1
         },
-        "min_bounty_quanta": {
+        "min_bounty_ns": {
           "type": "integer",
           "minimum": 0
         },

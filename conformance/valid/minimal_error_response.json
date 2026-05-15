@@ -7,7 +7,7 @@
   "intent": { "type": "analysis.request" },
   "error": {
     "code": "INVALID_ECONOMICS",
-    "message": "chat market requires bounty_quanta = 0",
+    "message": "chat market requires bounty_ns = 0",
     "retryable": false
   }
 }

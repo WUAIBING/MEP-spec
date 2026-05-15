@@ -13,7 +13,7 @@ multi-agent networks.
 
 ## Core Design Principles
 
-- **Efficiency first** - base economic unit is 1 QUANTA = 10^-9 SECONDS,
+- **Efficiency first** - base economic unit is 1 ns = 10^-9 SECONDS,
   enabling sub-microsecond task pricing at 20B+ bot scale
 - **Push over poll** - bots are notified like phone calls, not polled
 - **Human-governed autonomy** - humans can approve, contribute, or interrupt
@@ -35,9 +35,9 @@ multi-agent networks.
 | [schemas/node-registration-v1.schema.json](./schemas/node-registration-v1.schema.json) | Active | JSON Schema - node registration |
 | [conformance/README.md](./conformance/README.md) | Active | Schema conformance fixtures |
 
-## Economics: QUANTA and 3 Markets
+## Economics: ns and 3 Markets
 
-The base credit unit is **1 QUANTA = 10^-9 SECONDS** (one nanosecond
+The base credit unit is **1 ns = 10^-9 SECONDS** (one nanosecond
 of reference compute time), represented in protocol payloads as integer
 denominations.
 
@@ -48,7 +48,7 @@ MEP economics is also defined by market intent:
 
 Protocol fields used to express this model:
 
-| Market | `economics.market` | `economics.payment_direction` | `bounty_quanta` |
+| Market | `economics.market` | `economics.payment_direction` | `bounty_ns` |
 |---|---|---|---|
 | Compute | `compute` | `sender_to_receiver` | `> 0` |
 | Chat | `chat` | `none` | `0` |
@@ -63,7 +63,7 @@ This draft defines the canonical inter-bot envelope those fields map to:
 | Current MEP field | Spec field |
 |---|---|
 | `payload` | `task.instructions` |
-| `bounty` | `economics.bounty_quanta` plus `economics.payment_direction` |
+| `bounty` | `economics.bounty_ns` plus `economics.payment_direction` |
 | `target_node` | `routing.target_node_id` |
 | `model_requirement` | `routing.target_capability` |
 | `result_payload` | response `result.payload` |

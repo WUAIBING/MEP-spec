@@ -52,7 +52,7 @@ Candidate or Stable:
 
 - Removing a required field
 - Renaming a required field
-- Changing the type or denomination of `bounty_quanta`
+- Changing the type or denomination of `bounty_ns`
 - Changing market/payment-direction semantics
 - Changing unknown-field handling
 - Rejecting messages that were previously valid under the same major version
@@ -91,8 +91,8 @@ valid until the next major version.
 These decisions are part of the v1 direction and SHOULD NOT change
 without explicit review:
 
-- `bounty_quanta` is integer QUANTA, not floating-point SECONDS.
-- 1 QUANTA = 10^-9 SECONDS.
+- `bounty_ns` is integer ns, not floating-point SECONDS.
+- 1 ns = 10^-9 SECONDS.
 - Data-market direction is represented by `payment_direction`, not by a
   negative numeric bounty.
 - Unknown fields are ignored for forward compatibility.

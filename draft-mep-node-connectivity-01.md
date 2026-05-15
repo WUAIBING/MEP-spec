@@ -168,7 +168,7 @@ when the node is live but not actively watching every task.
 | `enabled` | Whether auto-bid behavior is active |
 | `intent_types` | Intent types the node will accept automatically |
 | `max_concurrent_tasks` | Concurrency cap for auto-accepted work |
-| `min_bounty_quanta` | Minimum bounty allowed for auto-acceptance |
+| `min_bounty_ns` | Minimum bounty allowed for auto-acceptance |
 | `max_task_instructions_length` | Maximum task size the node will accept |
 | `availability_schedule` | Optional local scheduling window |
 

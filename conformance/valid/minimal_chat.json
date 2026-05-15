@@ -9,8 +9,8 @@
     "expected_output": { "result_type": "text" }
   },
   "economics": {
-    "bounty_quanta": 0,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 0,
+    "currency": "MEP_NS",
     "market": "chat",
     "payment_direction": "none"
   }

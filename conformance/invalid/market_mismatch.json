@@ -9,8 +9,8 @@
     "expected_output": { "result_type": "text" }
   },
   "economics": {
-    "bounty_quanta": 1000000,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 1000000,
+    "currency": "MEP_NS",
     "market": "compute",
     "payment_direction": "receiver_to_sender"
   }

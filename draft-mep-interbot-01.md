@@ -14,7 +14,7 @@ Exchange Protocol (MEP).
 
 MEP is an efficiency-first protocol for structured task delegation,
 coordination, and economic exchange between autonomous agents. Its
-economic unit is the QUANTA, where 1 QUANTA = 10^-9 SECONDS. Ledger
+economic unit is ns, where 1 ns = 10^-9 SECONDS. Ledger
 values are represented with integer arithmetic, while settlement
 direction is explicit in the message envelope.
 
@@ -50,8 +50,8 @@ semantics remain a follow-up topic.
 | Hub | A routing, matching, and settlement service for MEP nodes |
 | Sender | The node originating the message |
 | Receiver | The node or hub processing the message |
-| QUANTA | Base protocol credit unit. 1 QUANTA = 10^-9 SECONDS |
-| SECONDS | Human display unit. 1 SECONDS = 1,000,000,000 QUANTA |
+| ns | Base protocol credit unit. 1 ns = 10^-9 SECONDS |
+| SECONDS | Human display unit. 1 SECONDS = 1,000,000,000 ns |
 | Market | Economic class of a message: `compute`, `chat`, or `data` |
 | Payment direction | Explicit settlement direction for a non-negative bounty |
 | Intent type | Semantic task category registered in `registry/intent-types.md` |
@@ -85,9 +85,9 @@ freshness tests.
 
 ### 3.5 Integer economics
 
-Ledger values MUST use integer QUANTA. Floating-point values MUST NOT be
+Ledger values MUST use integer ns. Floating-point values MUST NOT be
 used for ledger settlement. Presentation layers MAY display SECONDS by
-dividing QUANTA by 1,000,000,000.
+dividing ns by 1,000,000,000.
 
 ## 4. Canonical Request Envelope
 
@@ -109,8 +109,8 @@ JSON object.
     "expected_output": { "result_type": "markdown_summary" }
   },
   "economics": {
-    "bounty_quanta": 1000000,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 1000000,
+    "currency": "MEP_NS",
     "market": "compute",
     "payment_direction": "sender_to_receiver"
   }
@@ -131,8 +131,8 @@ JSON object.
     "expected_output": { "result_type": "subscription_ack" }
   },
   "economics": {
-    "bounty_quanta": 50000,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 50000,
+    "currency": "MEP_NS",
     "market": "data",
     "payment_direction": "receiver_to_sender"
   }
@@ -170,7 +170,7 @@ Error response:
   "intent": { "type": "analysis.request" },
   "error": {
     "code": "INVALID_ECONOMICS",
-    "message": "chat market requires bounty_quanta = 0",
+    "message": "chat market requires bounty_ns = 0",
     "retryable": false
   }
 }
@@ -189,7 +189,7 @@ Error response:
 | `routing` | MAY | Direct target or capability routing hints |
 | `intent` | MUST | Semantic task type |
 | `task` | MUST (requests) | Request payload and expected output |
-| `economics` | MUST (requests) | QUANTA amount, market, and settlement direction |
+| `economics` | MUST (requests) | ns amount, market, and settlement direction |
 | `in_reply_to` | MUST (responses) | UUID of the request being answered |
 | `result` | MAY (responses) | Response result object |
 | `error` | MAY (responses) | Response error object |
@@ -258,12 +258,12 @@ constraints, or implementation-specific execution hints.
 
 | Field | Required | Description |
 |---|---|---|
-| `bounty_quanta` | MUST | Non-negative u64 QUANTA amount |
-| `currency` | MUST | Always `MEP_QUANTA` in v1 |
+| `bounty_ns` | MUST | Non-negative u64 ns amount |
+| `currency` | MUST | Always `MEP_NS` in v1 |
 | `market` | MUST | `compute`, `chat`, or `data` |
 | `payment_direction` | MUST | Direction of settlement |
 
-`bounty_quanta` values up to 9007199254740991 MAY be encoded as JSON
+`bounty_ns` values up to 9007199254740991 MAY be encoded as JSON
 numbers. Larger values SHOULD be encoded as decimal strings so JSON
 implementations without exact large-integer support do not lose
 precision. Receivers MUST reject values above u64 max
@@ -271,10 +271,10 @@ precision. Receivers MUST reject values above u64 max
 
 ## 6. Three-Market Economics
 
-`bounty_quanta` is always non-negative. Payment direction is represented
+`bounty_ns` is always non-negative. Payment direction is represented
 by `economics.payment_direction`.
 
-| Market | `bounty_quanta` | `payment_direction` | Meaning |
+| Market | `bounty_ns` | `payment_direction` | Meaning |
 |---|---|---|---|
 | `compute` | `> 0` | `sender_to_receiver` | Sender pays receiver for execution |
 | `chat` | `0` | `none` | No settlement |
@@ -297,11 +297,11 @@ Receivers validating a message MUST enforce:
 6. `intent.type` MUST be registered or match the private-use dotted pattern.
 7. Request messages MUST include `task` and `economics`.
 8. If `task` is present, `task.instructions` MUST be non-empty and `task.expected_output.result_type` MUST be non-empty.
-9. If `economics` is present, `economics.currency` MUST equal `MEP_QUANTA`.
+9. If `economics` is present, `economics.currency` MUST equal `MEP_NS`.
 10. If `economics` is present, `economics.market` and `economics.payment_direction` MUST match the table in Section 6.
-11. If `economics.market = "chat"`, `bounty_quanta` MUST be 0.
-12. If `economics.market = "compute"` or `"data"`, `bounty_quanta` MUST be > 0.
-13. If `economics.bounty_quanta` is present, it MUST fit in u64 and MUST NOT be a floating-point value.
+11. If `economics.market = "chat"`, `bounty_ns` MUST be 0.
+12. If `economics.market = "compute"` or `"data"`, `bounty_ns` MUST be > 0.
+13. If `economics.bounty_ns` is present, it MUST fit in u64 and MUST NOT be a floating-point value.
 14. Response messages MUST include `in_reply_to` and MUST include exactly one of `result` or `error`.
 15. Unknown fields MUST be ignored.
 
@@ -327,13 +327,13 @@ map to hub fields as follows:
 | Current MEP field | Spec field |
 |---|---|
 | `payload` | `task.instructions` |
-| `bounty` | `economics.bounty_quanta` plus `economics.payment_direction` |
+| `bounty` | `economics.bounty_ns` plus `economics.payment_direction` |
 | `target_node` | `routing.target_node_id` |
 | `model_requirement` | `routing.target_capability` |
 | `result_payload` | response `result.payload` |
 
 Legacy negative `bounty` data-market tasks map to
-`economics.market = "data"`, a positive `economics.bounty_quanta`, and
+`economics.market = "data"`, a positive `economics.bounty_ns`, and
 `economics.payment_direction = "receiver_to_sender"`.
 
 This mapping is transitional. A future MEP implementation SHOULD accept

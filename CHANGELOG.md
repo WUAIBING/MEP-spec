@@ -1,5 +1,19 @@
 # MEP Specification Changelog
 
+## [2026-05-15] Draft-breaking unit rename
+
+- Renames `bounty_quanta` to `bounty_ns` across specs, schemas, and
+  conformance fixtures.
+- Renames `min_bounty_quanta` to `min_bounty_ns` in node registration
+  auto-bid policy.
+- Renames currency constant from `MEP_QUANTA` to `MEP_NS`.
+- Replaces project-specific QUANTA terminology with explicit ns /
+  nanosecond wording.
+- Renames conformance fixtures:
+  - `valid/string_quanta.json` to `valid/string_ns.json`
+  - `invalid/float_quanta.json` to `invalid/float_bounty.json`
+  - `invalid/overflow_quanta.json` to `invalid/overflow_bounty.json`
+
 ## [2026-05-14] Registry and contribution governance
 
 - Adds `CONTRIBUTING.md` with pull request, registry, error-code, and
@@ -12,8 +26,8 @@
 
 - Allows `routing.ttl_hops = 0` for direct-only, no-forwarding delivery.
 - Documents omitted `ttl_hops` as hub default forwarding policy.
-- Adds `valid/string_quanta.json` to exercise decimal-string
-  `bounty_quanta` values above the JavaScript safe integer boundary.
+- Adds `valid/string_ns.json` to exercise decimal-string
+  `bounty_ns` values above the JavaScript safe integer boundary.
 
 ## [2026-05-13] mep.node-connectivity.v1 draft
 
@@ -25,11 +39,11 @@
 
 ## [2026-05-11] Initial Draft (mep.interbot.v1)
 
-- Defines QUANTA denomination as integer economics (`bounty_quanta`).
+- Defines ns denomination as integer economics (`bounty_ns`).
 - Introduces explicit three-market model:
-  - `compute`: `sender_to_receiver`, `bounty_quanta > 0`
-  - `chat`: `none`, `bounty_quanta = 0`
-  - `data`: `receiver_to_sender`, `bounty_quanta > 0`
+  - `compute`: `sender_to_receiver`, `bounty_ns > 0`
+  - `chat`: `none`, `bounty_ns = 0`
+  - `data`: `receiver_to_sender`, `bounty_ns > 0`
 - Adds registry entries for data-market intents:
   - `data.feed.offer`
   - `data.dataset.offer`

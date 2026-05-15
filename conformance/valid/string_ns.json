@@ -2,15 +2,15 @@
   "spec_version": "mep.interbot.v1",
   "message_id": "7c8d9e0f-89ab-4cde-b012-3456789abcde",
   "timestamp_ms": 1746960000000,
-  "source": { "node_id": "node_large_quanta_01" },
+  "source": { "node_id": "node_large_ns_01" },
   "intent": { "type": "analysis.request" },
   "task": {
     "instructions": "Run a large multi-step analysis task.",
     "expected_output": { "result_type": "analysis_report" }
   },
   "economics": {
-    "bounty_quanta": "9007199254740992",
-    "currency": "MEP_QUANTA",
+    "bounty_ns": "9007199254740992",
+    "currency": "MEP_NS",
     "market": "compute",
     "payment_direction": "sender_to_receiver"
   }

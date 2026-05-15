@@ -5,8 +5,8 @@
   "source": { "node_id": "node_635d2a" },
   "intent": { "type": "analysis.request" },
   "economics": {
-    "bounty_quanta": 1000000,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 1000000,
+    "currency": "MEP_NS",
     "market": "compute",
     "payment_direction": "sender_to_receiver"
   }

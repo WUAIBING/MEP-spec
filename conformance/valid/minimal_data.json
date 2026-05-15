@@ -9,8 +9,8 @@
     "expected_output": { "result_type": "subscription_ack" }
   },
   "economics": {
-    "bounty_quanta": 50000,
-    "currency": "MEP_QUANTA",
+    "bounty_ns": 50000,
+    "currency": "MEP_NS",
     "market": "data",
     "payment_direction": "receiver_to_sender"
   }

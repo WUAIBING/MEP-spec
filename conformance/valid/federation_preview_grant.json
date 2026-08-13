@@ -1,0 +1,18 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "33333333-3333-4333-8333-333333333333",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786723200000,
+  "event_type": "collaboration.grant.prepare",
+  "source": { "node_id": "node_reviewer0001" },
+  "target": { "node_id": "node_requester0001" },
+  "grant": {
+    "grant_id": "fgrant_0123456789abcdef0123456789abcdef",
+    "invitation_id": "finv_0123456789abcdef0123456789abcdef",
+    "invitation_revision": 1,
+    "execution_allowed": false,
+    "bot_owner_grant": "accepted",
+    "requester_resource_grant": "pending",
+    "isolation_state": "not_provisioned"
+  }
+}

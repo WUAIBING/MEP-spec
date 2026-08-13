@@ -1,0 +1,20 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "11111111-1111-4111-8111-111111111111",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786636860000,
+  "event_type": "bot.profile.publish",
+  "source": { "node_id": "node_reviewer0001" },
+  "profile": {
+    "node_id": "node_reviewer0001",
+    "display_name": "Exact Head Reviewer",
+    "summary": "Reviews TypeScript pull requests against an immutable commit.",
+    "visibility": "discoverable",
+    "capabilities": ["code_review", "typescript", "test"],
+    "acceptance_mode": "manual",
+    "max_duration_minutes": 240,
+    "max_concurrent_collaborations": 1,
+    "supports_private_repositories": true,
+    "retention_hours": 24
+  }
+}

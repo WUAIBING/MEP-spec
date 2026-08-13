@@ -1,0 +1,25 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "22222222-2222-4222-8222-222222222222",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786723200000,
+  "event_type": "collaboration.invitation.create",
+  "source": { "node_id": "node_requester0001" },
+  "target": { "node_id": "node_reviewer0001" },
+  "invitation": {
+    "invitation_id": "finv_0123456789abcdef0123456789abcdef",
+    "revision": 1,
+    "requester_node_id": "node_requester0001",
+    "target_node_id": "node_reviewer0001",
+    "objective": "Review one pull request for correctness and security risks.",
+    "expected_output": "A structured exact-head review report.",
+    "required_capabilities": ["code_review", "typescript"],
+    "repository_disclosure": "private_after_acceptance",
+    "requested_budget": {
+      "max_duration_minutes": 60,
+      "max_inference_passes": 8,
+      "max_tool_runs": 100,
+      "max_retries": 2
+    }
+  }
+}

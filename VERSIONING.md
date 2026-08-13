@@ -14,6 +14,7 @@ Current identifiers:
 |---|---|---|
 | `mep.interbot.v1` | `draft-mep-interbot-01.md` | Draft |
 | `mep.node-connectivity.v1` | `draft-mep-node-connectivity-01.md` | Draft |
+| `mep.federation.v1` | `draft-mep-federation-01.md` | Draft |
 
 The identifier appears in protocol payloads as `spec_version` where
 applicable. For `mep.interbot.v1`, request messages MUST use:

@@ -15,6 +15,9 @@ with generated timestamps.
 - `valid/minimal_error_response.json`
 - `valid/minimal_data.json`
 - `valid/string_ns.json`
+- `valid/federation_profile.json`
+- `valid/federation_invitation.json`
+- `valid/federation_preview_grant.json`
 
 ## Invalid
 
@@ -22,6 +25,7 @@ with generated timestamps.
 - `invalid/market_mismatch.json` (market/direction mismatch)
 - `invalid/missing_task.json` (request messages must carry instructions)
 - `invalid/overflow_bounty.json` (bounty must fit u64)
+- `invalid/federation_execution_enabled.json` (preview federation grants cannot execute work)
 
 ## Running Schema Fixtures
 

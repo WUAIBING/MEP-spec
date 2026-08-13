@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/WUAIBING/MEP-spec/schemas/federation-v1.schema.json",
+  "title": "MEP Bot Federation Message v1",
+  "type": "object",
+  "required": ["spec_version", "message_id", "timestamp_ms", "expires_at_ms", "event_type", "source"],
+  "additionalProperties": true,
+  "properties": {
+    "spec_version": { "const": "mep.federation.v1" },
+    "message_id": { "$ref": "#/$defs/uuid" },
+    "timestamp_ms": { "type": "integer", "minimum": 0 },
+    "expires_at_ms": { "type": "integer", "minimum": 1 },
+    "event_type": {
+      "enum": [
+        "bot.profile.publish",
+        "bot.presence.update",
+        "collaboration.invitation.create",
+        "collaboration.invitation.accept",
+        "collaboration.invitation.reject",
+        "collaboration.invitation.counter",
+        "collaboration.invitation.revoke",
+        "collaboration.grant.prepare"
+      ]
+    },
+    "source": { "$ref": "#/$defs/node" },
+    "target": { "$ref": "#/$defs/node" },
+    "profile": { "$ref": "#/$defs/profile" },
+    "presence": { "$ref": "#/$defs/presence" },
+    "invitation": { "$ref": "#/$defs/invitation" },
+    "response": { "$ref": "#/$defs/response" },
+    "grant": { "$ref": "#/$defs/grant" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "event_type": { "const": "bot.profile.publish" } }, "required": ["event_type"] },
+      "then": { "required": ["profile"], "not": { "anyOf": [{ "required": ["target"] }, { "required": ["presence"] }, { "required": ["invitation"] }, { "required": ["response"] }, { "required": ["grant"] }] } }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "bot.presence.update" } }, "required": ["event_type"] },
+      "then": { "required": ["presence"], "not": { "anyOf": [{ "required": ["target"] }, { "required": ["profile"] }, { "required": ["invitation"] }, { "required": ["response"] }, { "required": ["grant"] }] } }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "collaboration.invitation.create" } }, "required": ["event_type"] },
+      "then": { "required": ["target", "invitation"], "not": { "anyOf": [{ "required": ["profile"] }, { "required": ["presence"] }, { "required": ["response"] }, { "required": ["grant"] }] } }
+    },
+    {
+      "if": { "properties": { "event_type": { "enum": ["collaboration.invitation.accept", "collaboration.invitation.reject", "collaboration.invitation.counter", "collaboration.invitation.revoke"] } }, "required": ["event_type"] },
+      "then": { "required": ["target", "response"], "not": { "anyOf": [{ "required": ["profile"] }, { "required": ["presence"] }, { "required": ["invitation"] }, { "required": ["grant"] }] } }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "collaboration.grant.prepare" } }, "required": ["event_type"] },
+      "then": { "required": ["target", "grant"], "not": { "anyOf": [{ "required": ["profile"] }, { "required": ["presence"] }, { "required": ["invitation"] }, { "required": ["response"] }] } }
+    }
+  ],
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "node": {
+      "type": "object",
+      "required": ["node_id"],
+      "additionalProperties": false,
+      "properties": { "node_id": { "type": "string", "pattern": "^node_[a-zA-Z0-9_-]{8,128}$" } }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$" }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["node_id", "display_name", "visibility", "capabilities", "acceptance_mode", "max_duration_minutes", "max_concurrent_collaborations", "supports_private_repositories", "retention_hours"],
+      "additionalProperties": false,
+      "properties": {
+        "node_id": { "type": "string", "pattern": "^node_[a-zA-Z0-9_-]{8,128}$" },
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "summary": { "type": "string", "maxLength": 280 },
+        "visibility": { "enum": ["private", "invite_link", "discoverable"] },
+        "capabilities": { "$ref": "#/$defs/capabilities" },
+        "acceptance_mode": { "enum": ["manual", "trusted_only"] },
+        "max_duration_minutes": { "type": "integer", "minimum": 1, "maximum": 10080 },
+        "max_concurrent_collaborations": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "supports_private_repositories": { "type": "boolean" },
+        "retention_hours": { "type": "integer", "minimum": 0, "maximum": 8760 }
+      }
+    },
+    "presence": {
+      "type": "object",
+      "required": ["node_id", "lifecycle", "availability", "reachable", "provider_ready"],
+      "additionalProperties": false,
+      "properties": {
+        "node_id": { "type": "string", "pattern": "^node_[a-zA-Z0-9_-]{8,128}$" },
+        "lifecycle": { "enum": ["approved", "configured", "connecting", "online", "provider_ready", "degraded", "offline", "suspended", "revoked"] },
+        "availability": { "enum": ["available", "busy", "do_not_disturb", "offline"] },
+        "reachable": { "type": "boolean" },
+        "provider_ready": { "type": "boolean" }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "required": ["max_duration_minutes", "max_inference_passes", "max_tool_runs", "max_retries"],
+      "additionalProperties": false,
+      "properties": {
+        "max_duration_minutes": { "type": "integer", "minimum": 1, "maximum": 10080 },
+        "max_inference_passes": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "max_tool_runs": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "max_retries": { "type": "integer", "minimum": 0, "maximum": 10 }
+      }
+    },
+    "invitation": {
+      "type": "object",
+      "required": ["invitation_id", "revision", "requester_node_id", "target_node_id", "objective", "expected_output", "required_capabilities", "repository_disclosure", "requested_budget"],
+      "additionalProperties": false,
+      "properties": {
+        "invitation_id": { "type": "string", "pattern": "^finv_[a-f0-9]{32}$" },
+        "revision": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "requester_node_id": { "type": "string", "pattern": "^node_[a-zA-Z0-9_-]{8,128}$" },
+        "target_node_id": { "type": "string", "pattern": "^node_[a-zA-Z0-9_-]{8,128}$" },
+        "objective": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "expected_output": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "required_capabilities": { "$ref": "#/$defs/capabilities" },
+        "repository_disclosure": { "enum": ["none", "public", "private_after_acceptance"] },
+        "requested_budget": { "$ref": "#/$defs/budget" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "required": ["invitation_id", "revision", "decision"],
+      "additionalProperties": false,
+      "properties": {
+        "invitation_id": { "type": "string", "pattern": "^finv_[a-f0-9]{32}$" },
+        "revision": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "decision": { "enum": ["accept", "reject", "counter", "revoke"] },
+        "reason_code": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{0,63}$" },
+        "counter_budget": { "$ref": "#/$defs/budget" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "counter" } }, "required": ["decision"] },
+          "then": { "required": ["counter_budget"] },
+          "else": { "not": { "required": ["counter_budget"] } }
+        }
+      ]
+    },
+    "grant": {
+      "type": "object",
+      "required": ["grant_id", "invitation_id", "invitation_revision", "execution_allowed", "bot_owner_grant", "requester_resource_grant", "isolation_state"],
+      "additionalProperties": false,
+      "properties": {
+        "grant_id": { "type": "string", "pattern": "^fgrant_[a-f0-9]{32}$" },
+        "invitation_id": { "type": "string", "pattern": "^finv_[a-f0-9]{32}$" },
+        "invitation_revision": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "execution_allowed": { "const": false },
+        "bot_owner_grant": { "enum": ["pending", "accepted", "revoked"] },
+        "requester_resource_grant": { "enum": ["pending", "accepted", "revoked"] },
+        "isolation_state": { "enum": ["not_provisioned", "pending"] }
+      }
+    }
+  }
+}

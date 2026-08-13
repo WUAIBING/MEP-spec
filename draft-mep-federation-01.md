@@ -218,6 +218,12 @@ A conforming Deskbot-style control plane SHOULD:
 The federation transport may be MEP, but the owner control plane remains the
 authority for local policy and resource access.
 
+Deskbot's first independent implementation shipped in
+[`deskbotdev/deskbot#41`](https://github.com/deskbotdev/deskbot/pull/41). It
+implements account-scoped profiles, fresh/provider-ready discovery, durable
+invitation revisions, owner decisions, and preview grants. It deliberately does
+not implement independent-hub message transport or external execution.
+
 ## 11. Conformance
 
 Static conformance fixtures validate message shape. Runtime conformance tests

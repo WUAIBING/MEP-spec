@@ -7,6 +7,10 @@ Validators MUST NOT apply the runtime timestamp freshness rule to these
 static fixtures. Freshness is a semantic/runtime check and should be tested
 with generated timestamps.
 
+Federation invariants that JSON Schema cannot express are covered under
+`federation_semantic/`, including timestamp ordering, source/profile identity,
+invitation participant binding, and event/decision consistency.
+
 ## Valid
 
 - `valid/minimal_compute.json`
@@ -15,6 +19,9 @@ with generated timestamps.
 - `valid/minimal_error_response.json`
 - `valid/minimal_data.json`
 - `valid/string_ns.json`
+- `valid/federation_profile.json`
+- `valid/federation_invitation.json`
+- `valid/federation_preview_grant.json`
 
 ## Invalid
 
@@ -22,10 +29,12 @@ with generated timestamps.
 - `invalid/market_mismatch.json` (market/direction mismatch)
 - `invalid/missing_task.json` (request messages must carry instructions)
 - `invalid/overflow_bounty.json` (bounty must fit u64)
+- `invalid/federation_execution_enabled.json` (preview federation grants cannot execute work)
 
 ## Running Schema Fixtures
 
 ```bash
 python -m pip install jsonschema
 python conformance/validate_schema.py
+python conformance/validate_federation_semantics.py
 ```

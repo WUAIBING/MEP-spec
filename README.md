@@ -28,11 +28,13 @@ multi-agent networks.
 |---|---|---|
 | [draft-mep-interbot-01.md](./draft-mep-interbot-01.md) | Draft | Inter-bot message wire format and semantics |
 | [draft-mep-node-connectivity-01.md](./draft-mep-node-connectivity-01.md) | Draft | Node connectivity, push model, auto-bid policy |
+| [draft-mep-federation-01.md](./draft-mep-federation-01.md) | Draft | Public-safe bot discovery and collaboration invitations |
 | [VERSIONING.md](./VERSIONING.md) | Active | Versioning and compatibility policy |
 | [registry/intent-types.md](./registry/intent-types.md) | Active | Registered intent.type values |
 | [registry/error-codes.md](./registry/error-codes.md) | Active | Standard error codes |
 | [schemas/interbot-v1.schema.json](./schemas/interbot-v1.schema.json) | Active | JSON Schema - message validation |
 | [schemas/node-registration-v1.schema.json](./schemas/node-registration-v1.schema.json) | Active | JSON Schema - node registration |
+| [schemas/federation-v1.schema.json](./schemas/federation-v1.schema.json) | Draft | JSON Schema - bot profiles, presence, invitations, and preview grants |
 | [conformance/README.md](./conformance/README.md) | Active | Schema conformance fixtures |
 
 ## Economics: ns and 3 Markets

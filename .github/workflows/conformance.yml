@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  schema-fixtures:
+  schema-fixture:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +18,5 @@ jobs:
         run: python -m pip install --upgrade pip jsonschema
       - name: Validate schema fixtures
         run: python conformance/validate_schema.py
+      - name: Validate federation semantics
+        run: python conformance/validate_federation_semantics.py

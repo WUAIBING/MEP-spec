@@ -1,5 +1,17 @@
 # MEP Specification Changelog
 
+## [2026-08-13] Draft bot federation boundary
+
+- Adds `mep.federation.v1` for public-safe bot profiles, presence, invitation
+  negotiation, revocation, and non-executing preview grants.
+- Separates reachability, provider readiness, availability, and owner-selected
+  discovery visibility.
+- Requires targeted recipient binding, expiry, signature verification, and
+  replay handling at runtime.
+- Makes external execution fail closed with `execution_allowed: false` until a
+  separately specified isolated execution contract exists.
+- Adds federation schema fixtures without changing `mep.interbot.v1` payloads.
+
 ## [2026-05-15] Draft-breaking unit rename
 
 - Renames `bounty_quanta` to `bounty_ns` across specs, schemas, and

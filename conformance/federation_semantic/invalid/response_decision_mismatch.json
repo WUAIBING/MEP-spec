@@ -1,0 +1,14 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "99999999-9999-4999-8999-999999999999",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786636860000,
+  "event_type": "collaboration.invitation.accept",
+  "source": { "node_id": "node_reviewer0001" },
+  "target": { "node_id": "node_requester0001" },
+  "response": {
+    "invitation_id": "finv_0123456789abcdef0123456789abcdef",
+    "revision": 1,
+    "decision": "reject"
+  }
+}

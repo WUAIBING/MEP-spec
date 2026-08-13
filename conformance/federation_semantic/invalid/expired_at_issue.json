@@ -1,0 +1,9 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "66666666-6666-4666-8666-666666666666",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786636800000,
+  "event_type": "bot.presence.update",
+  "source": { "node_id": "node_reviewer0001" },
+  "presence": { "node_id": "node_reviewer0001" }
+}

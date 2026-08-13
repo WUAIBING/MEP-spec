@@ -7,6 +7,10 @@ Validators MUST NOT apply the runtime timestamp freshness rule to these
 static fixtures. Freshness is a semantic/runtime check and should be tested
 with generated timestamps.
 
+Federation invariants that JSON Schema cannot express are covered under
+`federation_semantic/`, including timestamp ordering, source/profile identity,
+invitation participant binding, and event/decision consistency.
+
 ## Valid
 
 - `valid/minimal_compute.json`
@@ -32,4 +36,5 @@ with generated timestamps.
 ```bash
 python -m pip install jsonschema
 python conformance/validate_schema.py
+python conformance/validate_federation_semantics.py
 ```

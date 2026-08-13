@@ -1,0 +1,9 @@
+{
+  "spec_version": "mep.federation.v1",
+  "message_id": "77777777-7777-4777-8777-777777777777",
+  "timestamp_ms": 1786636800000,
+  "expires_at_ms": 1786636860000,
+  "event_type": "bot.profile.publish",
+  "source": { "node_id": "node_attacker0001" },
+  "profile": { "node_id": "node_victim000001" }
+}

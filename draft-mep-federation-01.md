@@ -223,4 +223,6 @@ authority for local policy and resource access.
 Static conformance fixtures validate message shape. Runtime conformance tests
 MUST additionally cover expiry, signature verification, replay, wrong-recipient
 delivery, invalid state transitions, and conflicting invitation revisions.
-
+The reference semantic fixtures additionally enforce timestamp ordering,
+source/profile identity, invitation participant binding, and response-event
+consistency.
